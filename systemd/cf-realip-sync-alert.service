@@ -1,0 +1,7 @@
+[Unit]
+Description=Mail an alert when cf-realip-sync fails
+Documentation=https://github.com/na-parse/cf-realip-sync
+
+[Service]
+Type=oneshot
+ExecStart=/opt/cf-realip-sync/deploy/alert.sh cf-realip-sync.service

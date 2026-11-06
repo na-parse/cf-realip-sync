@@ -1,0 +1,12 @@
+[Unit]
+Description=Sync nginx real_ip ranges with Cloudflare
+Documentation=https://github.com/na-parse/cf-realip-sync
+Wants=network-online.target
+After=network-online.target nginx.service
+OnFailure=cf-realip-sync-alert.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/cf-realip-sync/cf-realip-sync --apply
+PrivateTmp=yes
+ProtectHome=read-only
