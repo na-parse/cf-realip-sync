@@ -102,6 +102,14 @@ class RenderAndInstall(unittest.TestCase):
         self.assertEqual(text, crs.render(self.cfg, V4, V6))
         self.assertIn('real_ip_header CF-Connecting-IP;', text)
 
+    def test_ranges_in_joined_lines(self) -> None:
+        '''Joined directives both count; commented-out ones do not.'''
+        text = ('set_real_ip_from 10.0.0.0/8;set_real_ip_from 2001:db8::/32;\n'
+                '  set_real_ip_from 192.0.2.0/24 ;\n'
+                '# set_real_ip_from 198.51.100.0/24;\n')
+        self.assertEqual(crs.ranges_in(text),
+                         ['10.0.0.0/8', '2001:db8::/32', '192.0.2.0/24'])
+
     def test_install_success(self) -> None:
         '''New file installed, previous kept as .prev.'''
         self.out.write_text('old\n')
